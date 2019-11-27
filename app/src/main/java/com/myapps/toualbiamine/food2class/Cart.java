@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.*;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +17,7 @@ import com.myapps.toualbiamine.food2class.Common.Common;
 import com.myapps.toualbiamine.food2class.Model.Order;
 import com.myapps.toualbiamine.food2class.Model.Request;
 import com.myapps.toualbiamine.food2class.Providers.IOrderProvider;
+import com.myapps.toualbiamine.food2class.Utils.SwipeToDeleteCallback;
 import com.myapps.toualbiamine.food2class.ViewHolder.CartAdapter;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -139,18 +141,18 @@ public class Cart extends AppCompatActivity {
 
     }
 
-    private void loadCart() {
-
+    public void loadCart() {
         cart = orderProvider.getAll();
         adapter = new CartAdapter(cart, this);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
 
-        int swipePrice = 0;
-        for(Order order : cart) {
-            swipePrice += Integer.parseInt(order.getQuantity());
-        }
-
-        mealSwipeTotal.setText(swipePrice + " Meal Swipe(s)");
-
+//        int swipePrice = 0;
+//        for(Order order : cart) {
+//            swipePrice += Integer.parseInt(order.getQuantity());
+//        }
+//
+//        mealSwipeTotal.setText(swipePrice + " Meal Swipe(s)");
     }
 }
